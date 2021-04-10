@@ -58,7 +58,7 @@ import org.openjdk.jmh.annotations.Warmup;
 public class Regex {
 
   @State(Scope.Benchmark)
-  public static class _State {
+  public static class StatePatterns {
     Pattern excludePattern;
 
     String excludeRegex;
@@ -95,13 +95,13 @@ public class Regex {
   }
 
   @Benchmark
-  public boolean matchesUsingPattern(_State state) {
+  public boolean matchesUsingPattern(StatePatterns state) {
     return state.includePattern.matcher(state.value).matches()
         && !state.excludePattern.matcher(state.value).matches();
   }
 
   @Benchmark
-  public boolean matchesUsingString(_State state) {
+  public boolean matchesUsingString(StatePatterns state) {
     return state.value.matches(state.includeRegex) && !state.value.matches(state.excludeRegex);
   }
 }

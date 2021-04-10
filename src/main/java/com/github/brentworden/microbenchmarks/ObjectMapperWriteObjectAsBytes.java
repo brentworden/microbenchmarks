@@ -63,7 +63,7 @@ import org.openjdk.jmh.annotations.Warmup;
 public class ObjectMapperWriteObjectAsBytes {
 
   @State(Scope.Benchmark)
-  public static class _State {
+  public static class StateJson {
 
     static final JsonFactory jsonFactory;
 
@@ -109,13 +109,13 @@ public class ObjectMapperWriteObjectAsBytes {
   }
 
   @Benchmark
-  public byte[] writeBytes(_State state) throws JsonProcessingException {
-    return _State.objectMapper.writeValueAsBytes(state.rawObject);
+  public byte[] writeBytes(StateJson state) throws JsonProcessingException {
+    return StateJson.objectMapper.writeValueAsBytes(state.rawObject);
   }
 
   @Benchmark
-  public byte[] writeStringConvertToBytes(_State state) throws JsonProcessingException {
-    String jsonString = _State.objectMapper.writeValueAsString(state.rawObject);
+  public byte[] writeStringConvertToBytes(StateJson state) throws JsonProcessingException {
+    String jsonString = StateJson.objectMapper.writeValueAsString(state.rawObject);
     return jsonString.getBytes(StandardCharsets.UTF_8);
   }
 }

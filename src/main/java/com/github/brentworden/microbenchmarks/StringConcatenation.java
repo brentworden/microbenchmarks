@@ -57,7 +57,7 @@ import org.openjdk.jmh.annotations.Warmup;
 public class StringConcatenation {
 
   @State(Scope.Benchmark)
-  public static class _State {
+  public static class StateStringParts {
     String[] parts;
 
     final Random rng = new Random();
@@ -84,12 +84,12 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String concatenationUsingAddition(_State state) {
+  public String concatenationUsingAddition(StateStringParts state) {
     return state.parts[0] + state.parts[1] + state.parts[2] + state.parts[3] + state.parts[4];
   }
 
   @Benchmark
-  public String concatenationUsingStringBuilder(_State state) {
+  public String concatenationUsingStringBuilder(StateStringParts state) {
     StringBuilder b = new StringBuilder();
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -100,7 +100,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String concatenationUsingStringBuilderWithExactInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithExactInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(50);
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -111,7 +111,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String concatenationUsingStringBuilderWithLargeInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithLargeInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(60);
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -122,7 +122,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String concatenationUsingStringBuilderWithSmallInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithSmallInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(40);
     b.append(state.parts[0])
         .append(state.parts[1])

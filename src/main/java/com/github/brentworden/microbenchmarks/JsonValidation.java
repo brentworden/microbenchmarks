@@ -67,7 +67,7 @@ import org.openjdk.jmh.annotations.Warmup;
 public class JsonValidation {
 
   @State(Scope.Benchmark)
-  public static class _State {
+  public static class StateJson {
     static final JsonFactory jsonFactory;
 
     static final ObjectMapper objectMapper;
@@ -134,43 +134,44 @@ public class JsonValidation {
   }
 
   @Benchmark
-  public boolean validationUsingJsonParser_InvalidBeginning(_State state) {
-    return validateUsingJsonParser(state.jsonStringInvalidBeginning, _State.jsonFactory);
+  public boolean validationUsingJsonParser_InvalidBeginning(StateJson state) {
+    return validateUsingJsonParser(state.jsonStringInvalidBeginning, StateJson.jsonFactory);
   }
 
   @Benchmark
-  public boolean validationUsingJsonParser_InvalidEnding(_State state) {
-    return validateUsingJsonParser(state.jsonStringInvalidEnding, _State.jsonFactory);
+  public boolean validationUsingJsonParser_InvalidEnding(StateJson state) {
+    return validateUsingJsonParser(state.jsonStringInvalidEnding, StateJson.jsonFactory);
   }
 
   @Benchmark
-  public boolean validationUsingJsonParser_InvalidMiddle(_State state) {
-    return validateUsingJsonParser(state.jsonStringInvalidMiddle, _State.jsonFactory);
+  public boolean validationUsingJsonParser_InvalidMiddle(StateJson state) {
+    return validateUsingJsonParser(state.jsonStringInvalidMiddle, StateJson.jsonFactory);
   }
 
   @Benchmark
-  public boolean validationUsingJsonParser_Valid(_State state) {
-    return validateUsingJsonParser(state.jsonString, _State.jsonFactory);
+  public boolean validationUsingJsonParser_Valid(StateJson state) {
+    return validateUsingJsonParser(state.jsonString, StateJson.jsonFactory);
   }
 
   @Benchmark
-  public boolean validationUsingObjectMapperReadTree_InvalidBeginning(_State state) {
-    return validateUsingObjectMapperReadTree(state.jsonStringInvalidBeginning, _State.objectMapper);
+  public boolean validationUsingObjectMapperReadTree_InvalidBeginning(StateJson state) {
+    return validateUsingObjectMapperReadTree(
+        state.jsonStringInvalidBeginning, StateJson.objectMapper);
   }
 
   @Benchmark
-  public boolean validationUsingObjectMapperReadTree_InvalidEnding(_State state) {
-    return validateUsingObjectMapperReadTree(state.jsonStringInvalidEnding, _State.objectMapper);
+  public boolean validationUsingObjectMapperReadTree_InvalidEnding(StateJson state) {
+    return validateUsingObjectMapperReadTree(state.jsonStringInvalidEnding, StateJson.objectMapper);
   }
 
   @Benchmark
-  public boolean validationUsingObjectMapperReadTree_InvalidMiddle(_State state) {
-    return validateUsingObjectMapperReadTree(state.jsonStringInvalidMiddle, _State.objectMapper);
+  public boolean validationUsingObjectMapperReadTree_InvalidMiddle(StateJson state) {
+    return validateUsingObjectMapperReadTree(state.jsonStringInvalidMiddle, StateJson.objectMapper);
   }
 
   @Benchmark
-  public boolean validationUsingObjectMapperReadTree_Valid(_State state) {
-    return validateUsingObjectMapperReadTree(state.jsonString, _State.objectMapper);
+  public boolean validationUsingObjectMapperReadTree_Valid(StateJson state) {
+    return validateUsingObjectMapperReadTree(state.jsonString, StateJson.objectMapper);
   }
 
   private boolean validateUsingJsonParser(String jsonString, JsonFactory jsonFactory) {
