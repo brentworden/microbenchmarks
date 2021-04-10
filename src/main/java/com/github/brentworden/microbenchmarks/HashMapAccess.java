@@ -59,6 +59,10 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class HashMapAccess {
 
+  /**
+   * State used by the benchmarks to hold onto a map so its construction is not considered part of
+   * the test.
+   */
   @State(Scope.Benchmark)
   public static class HashMapAccessState {
     final Map<Integer, Integer> map = new HashMap<>();
