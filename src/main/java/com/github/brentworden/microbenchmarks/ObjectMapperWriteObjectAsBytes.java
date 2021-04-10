@@ -60,7 +60,7 @@ import org.openjdk.jmh.annotations.Warmup;
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
 @Measurement(iterations = 20, time = 1, timeUnit = TimeUnit.SECONDS)
 @Fork(10)
-public class ObjectMapperWriteStringVsBytes {
+public class ObjectMapperWriteObjectAsBytes {
 
   @State(Scope.Benchmark)
   public static class _State {
@@ -109,12 +109,12 @@ public class ObjectMapperWriteStringVsBytes {
   }
 
   @Benchmark
-  public byte[] treatment_WriteBytes(_State state) throws JsonProcessingException {
+  public byte[] writeBytes(_State state) throws JsonProcessingException {
     return _State.objectMapper.writeValueAsBytes(state.rawObject);
   }
 
   @Benchmark
-  public byte[] treatment_WriteStringConvertToBytes(_State state) throws JsonProcessingException {
+  public byte[] writeStringConvertToBytes(_State state) throws JsonProcessingException {
     String jsonString = _State.objectMapper.writeValueAsString(state.rawObject);
     return jsonString.getBytes(StandardCharsets.UTF_8);
   }

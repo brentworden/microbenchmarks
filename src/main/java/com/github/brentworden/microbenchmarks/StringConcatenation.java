@@ -84,12 +84,12 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String control_ConcatenationUsingAddition(_State state) {
+  public String concatenationUsingAddition(_State state) {
     return state.parts[0] + state.parts[1] + state.parts[2] + state.parts[3] + state.parts[4];
   }
 
   @Benchmark
-  public String treatment_ConcatenationUsingStringBuilder(_State state) {
+  public String concatenationUsingStringBuilder(_State state) {
     StringBuilder b = new StringBuilder();
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -100,7 +100,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String treatment_ConcatenationUsingStringBuilderWithExactInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithExactInitialCapacity(_State state) {
     StringBuilder b = new StringBuilder(50);
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -111,7 +111,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String treatment_ConcatenationUsingStringBuilderWithLargeInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithLargeInitialCapacity(_State state) {
     StringBuilder b = new StringBuilder(60);
     b.append(state.parts[0])
         .append(state.parts[1])
@@ -122,7 +122,7 @@ public class StringConcatenation {
   }
 
   @Benchmark
-  public String treatment_ConcatenationUsingStringBuilderWithSmallInitialCapacity(_State state) {
+  public String concatenationUsingStringBuilderWithSmallInitialCapacity(_State state) {
     StringBuilder b = new StringBuilder(40);
     b.append(state.parts[0])
         .append(state.parts[1])

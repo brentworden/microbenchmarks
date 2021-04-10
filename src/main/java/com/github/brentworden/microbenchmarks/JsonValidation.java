@@ -134,42 +134,42 @@ public class JsonValidation {
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingJsonParser_InvalidBeginning(_State state) {
+  public boolean validationUsingJsonParser_InvalidBeginning(_State state) {
     return validateUsingJsonParser(state.jsonStringInvalidBeginning, _State.jsonFactory);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingJsonParser_InvalidEnding(_State state) {
+  public boolean validationUsingJsonParser_InvalidEnding(_State state) {
     return validateUsingJsonParser(state.jsonStringInvalidEnding, _State.jsonFactory);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingJsonParser_InvalidMiddle(_State state) {
+  public boolean validationUsingJsonParser_InvalidMiddle(_State state) {
     return validateUsingJsonParser(state.jsonStringInvalidMiddle, _State.jsonFactory);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingJsonParser_Valid(_State state) {
+  public boolean validationUsingJsonParser_Valid(_State state) {
     return validateUsingJsonParser(state.jsonString, _State.jsonFactory);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingObjectMapperReadTree_InvalidBeginning(_State state) {
+  public boolean validationUsingObjectMapperReadTree_InvalidBeginning(_State state) {
     return validateUsingObjectMapperReadTree(state.jsonStringInvalidBeginning, _State.objectMapper);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingObjectMapperReadTree_InvalidEnding(_State state) {
+  public boolean validationUsingObjectMapperReadTree_InvalidEnding(_State state) {
     return validateUsingObjectMapperReadTree(state.jsonStringInvalidEnding, _State.objectMapper);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingObjectMapperReadTree_InvalidMiddle(_State state) {
+  public boolean validationUsingObjectMapperReadTree_InvalidMiddle(_State state) {
     return validateUsingObjectMapperReadTree(state.jsonStringInvalidMiddle, _State.objectMapper);
   }
 
   @Benchmark
-  public boolean treatment_ValidationUsingObjectMapperReadTree_Valid(_State state) {
+  public boolean validationUsingObjectMapperReadTree_Valid(_State state) {
     return validateUsingObjectMapperReadTree(state.jsonString, _State.objectMapper);
   }
 
