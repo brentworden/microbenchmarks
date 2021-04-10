@@ -72,6 +72,10 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class Coders {
 
+  /**
+   * State used by the benchmarks to hold onto {@link Coder} instances so their construction is not
+   * considered part of the test.
+   */
   @State(Scope.Benchmark)
   public static class CoderState {
     Coder<TestObject> avroCoder;
@@ -88,6 +92,10 @@ public class Coders {
     }
   }
 
+  /**
+   * The test object type that will serve as the object being encoded and decoded with the various
+   * {@link Coder} implementations.
+   */
   public static class TestObject implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -125,6 +133,7 @@ public class Coders {
     }
   }
 
+  /** The custom {@link Coder} used by the benchmarks. */
   public static class TestObjectCoder extends AtomicCoder<TestObject> {
 
     private static final BooleanCoder BOOLEAN_CODER = BooleanCoder.of();
@@ -160,6 +169,10 @@ public class Coders {
     }
   }
 
+  /**
+   * State used by the benchmarks to hold onto {@link TestObject} instances so their construction is
+   * not considered part of the test.
+   */
   @State(Scope.Thread)
   @AuxCounters(AuxCounters.Type.EVENTS)
   public static class TestObjectState {
@@ -182,7 +195,7 @@ public class Coders {
     }
   }
 
-  /** Benchmark that measures the throughput of encoding and decoding using a {@link AvroCoder}. */
+  /** Benchmark that measures the throughput of encoding and decoding using an {@link AvroCoder}. */
   @Benchmark
   public TestObject avroCoder(CoderState coders, TestObjectState testObject) throws IOException {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
