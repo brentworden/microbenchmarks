@@ -58,8 +58,12 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class HashMapValueIteration {
 
+  /**
+   * State used by the benchmarks to hold onto a map so its construction is not considered part of
+   * the test.
+   */
   @State(Scope.Benchmark)
-  public static class HashMapAccessState {
+  public static class StateHashMap {
     final Map<Integer, Integer> map = new HashMap<>();
 
     final Random rng = new Random();
@@ -81,7 +85,7 @@ public class HashMapValueIteration {
    * entry.
    */
   @Benchmark
-  public Integer iterateEntries(HashMapAccessState state) {
+  public Integer iterateEntries(StateHashMap state) {
     Integer value = null;
     for (Map.Entry<Integer, Integer> entry : state.map.entrySet()) {
       value = entry.getValue();
@@ -94,7 +98,7 @@ public class HashMapValueIteration {
    * {@link Map#keys} collection and calling the {@link Map#get} method for each key.
    */
   @Benchmark
-  public Integer iterateKeys(HashMapAccessState state) {
+  public Integer iterateKeys(StateHashMap state) {
     Integer value = null;
     for (Integer key : state.map.keySet()) {
       value = state.map.get(key);
@@ -107,7 +111,7 @@ public class HashMapValueIteration {
    * {@link Map#values} collection directly.
    */
   @Benchmark
-  public Integer iterateValues(HashMapAccessState state) {
+  public Integer iterateValues(StateHashMap state) {
     Integer value = null;
     for (Integer key : state.map.values()) {
       value = key;

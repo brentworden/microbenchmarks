@@ -77,7 +77,7 @@ public class Coders {
    * considered part of the test.
    */
   @State(Scope.Benchmark)
-  public static class CoderState {
+  public static class StateCoders {
     Coder<TestObject> avroCoder;
 
     Coder<TestObject> customCoder;
@@ -89,6 +89,32 @@ public class Coders {
       avroCoder = AvroCoder.of(TestObject.class);
       customCoder = TestObjectCoder.of();
       serializableCoder = SerializableCoder.of(TestObject.class);
+    }
+  }
+
+  /**
+   * State used by the benchmarks to hold onto {@link TestObject} instances so their construction is
+   * not considered part of the test.
+   */
+  @State(Scope.Thread)
+  @AuxCounters(AuxCounters.Type.EVENTS)
+  public static class StateTestObjects {
+    public int bytes;
+
+    TestObject originalTestObject;
+
+    @Setup(Level.Iteration)
+    public void onIterationSetup() {
+      originalTestObject = new TestObject();
+      originalTestObject.setIntValue((int) (Math.random() * 100000.0));
+      originalTestObject.setNonNullableStringValue(
+          RandomStringUtils.randomAlphabetic((int) (Math.random() * 100.0) + 1));
+      if (Math.random() > 0.125) {
+        originalTestObject.setNullableStringValue(
+            RandomStringUtils.randomAlphabetic((int) (Math.random() * 100.0) + 1));
+      } else {
+        originalTestObject.setNullableStringValue(null);
+      }
     }
   }
 
@@ -169,35 +195,9 @@ public class Coders {
     }
   }
 
-  /**
-   * State used by the benchmarks to hold onto {@link TestObject} instances so their construction is
-   * not considered part of the test.
-   */
-  @State(Scope.Thread)
-  @AuxCounters(AuxCounters.Type.EVENTS)
-  public static class TestObjectState {
-    public int bytes;
-
-    TestObject originalTestObject;
-
-    @Setup(Level.Iteration)
-    public void onIterationSetup() {
-      originalTestObject = new TestObject();
-      originalTestObject.setIntValue((int) (Math.random() * 100000.0));
-      originalTestObject.setNonNullableStringValue(
-          RandomStringUtils.randomAlphabetic((int) (Math.random() * 100.0) + 1));
-      if (Math.random() > 0.125) {
-        originalTestObject.setNullableStringValue(
-            RandomStringUtils.randomAlphabetic((int) (Math.random() * 100.0) + 1));
-      } else {
-        originalTestObject.setNullableStringValue(null);
-      }
-    }
-  }
-
   /** Benchmark that measures the throughput of encoding and decoding using an {@link AvroCoder}. */
   @Benchmark
-  public TestObject avroCoder(CoderState coders, TestObjectState testObject) throws IOException {
+  public TestObject avroCoder(StateCoders coders, StateTestObjects testObject) throws IOException {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
     coders.avroCoder.encode(testObject.originalTestObject, bos);
 
@@ -215,7 +215,8 @@ public class Coders {
    * Benchmark that measures the throughput of encoding and decoding using a custom {@link Coder}.
    */
   @Benchmark
-  public TestObject customCoder(CoderState coders, TestObjectState testObject) throws IOException {
+  public TestObject customCoder(StateCoders coders, StateTestObjects testObject)
+      throws IOException {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
     coders.customCoder.encode(testObject.originalTestObject, bos);
 
@@ -234,7 +235,7 @@ public class Coders {
    * SerializableCoder}.
    */
   @Benchmark
-  public TestObject serializableCoder(CoderState coders, TestObjectState testObject)
+  public TestObject serializableCoder(StateCoders coders, StateTestObjects testObject)
       throws IOException {
     ByteArrayOutputStream bos = new ByteArrayOutputStream(1000);
     coders.serializableCoder.encode(testObject.originalTestObject, bos);

@@ -64,7 +64,7 @@ public class HashMapAccess {
    * the test.
    */
   @State(Scope.Benchmark)
-  public static class HashMapAccessState {
+  public static class StateHashMap {
     final Map<Integer, Integer> map = new HashMap<>();
 
     final Random rng = new Random();
@@ -85,7 +85,7 @@ public class HashMapAccess {
    * the key and then returning the value if it does.
    */
   @Benchmark
-  public Integer containsAndGet(HashMapAccessState state) {
+  public Integer containsAndGet(StateHashMap state) {
     Integer key = Integer.valueOf(state.rng.nextInt(55));
     if (state.map.containsKey(key)) {
       return state.map.get(key);
@@ -98,7 +98,7 @@ public class HashMapAccess {
    * returning the value if it is not null.
    */
   @Benchmark
-  public Integer getAndNullCheck(HashMapAccessState state) {
+  public Integer getAndNullCheck(StateHashMap state) {
     Integer key = Integer.valueOf(state.rng.nextInt(55));
     Integer value = state.map.get(key);
     if (value == null) {
