@@ -95,13 +95,13 @@ public class Regex {
   }
 
   @Benchmark
-  public boolean control_MatchesUsingString(_State state) {
-    return state.value.matches(state.includeRegex) && !state.value.matches(state.excludeRegex);
+  public boolean matchesUsingPattern(_State state) {
+    return state.includePattern.matcher(state.value).matches()
+        && !state.excludePattern.matcher(state.value).matches();
   }
 
   @Benchmark
-  public boolean treatment_MatchesUsingPattern(_State state) {
-    return state.includePattern.matcher(state.value).matches()
-        && !state.excludePattern.matcher(state.value).matches();
+  public boolean matchesUsingString(_State state) {
+    return state.value.matches(state.includeRegex) && !state.value.matches(state.excludeRegex);
   }
 }

@@ -71,12 +71,12 @@ public class ObjectMapperSingleton {
   }
 
   @Benchmark
-  public ObjectMapper treatment_PrototypeObjectMapper() {
+  public ObjectMapper prototypeObjectMapper() {
     return getPrototypeObjectMapper();
   }
 
   @Benchmark
-  public ObjectMapper treatment_SingletonObjectMapper() {
+  public ObjectMapper singletonObjectMapper() {
     return getSingletonObjectMapper();
   }
 }
