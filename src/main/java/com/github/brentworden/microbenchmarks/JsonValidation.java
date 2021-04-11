@@ -66,6 +66,10 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class JsonValidation {
 
+  /**
+   * State used by the benchmarks to hold onto Jackson objects so their construction is not
+   * considered part of the test.
+   */
   @State(Scope.Benchmark)
   public static class StateJson {
     static final JsonFactory jsonFactory;
@@ -133,42 +137,74 @@ public class JsonValidation {
     }
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using a {@link JsonFactory}
+   * where the JSON is invalid at the beginning of the content.
+   */
   @Benchmark
   public boolean validationUsingJsonParser_InvalidBeginning(StateJson state) {
     return validateUsingJsonParser(state.jsonStringInvalidBeginning, StateJson.jsonFactory);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using a {@link JsonFactory}
+   * where the JSON is invalid at the ending of the content.
+   */
   @Benchmark
   public boolean validationUsingJsonParser_InvalidEnding(StateJson state) {
     return validateUsingJsonParser(state.jsonStringInvalidEnding, StateJson.jsonFactory);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using a {@link JsonFactory}
+   * where the JSON is invalid in the middle of the content.
+   */
   @Benchmark
   public boolean validationUsingJsonParser_InvalidMiddle(StateJson state) {
     return validateUsingJsonParser(state.jsonStringInvalidMiddle, StateJson.jsonFactory);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using a {@link JsonFactory}
+   * where the JSON is valid.
+   */
   @Benchmark
   public boolean validationUsingJsonParser_Valid(StateJson state) {
     return validateUsingJsonParser(state.jsonString, StateJson.jsonFactory);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using an {@link
+   * ObjectMapper} where the JSON is invalid at the beginning of the content.
+   */
   @Benchmark
   public boolean validationUsingObjectMapperReadTree_InvalidBeginning(StateJson state) {
     return validateUsingObjectMapperReadTree(
         state.jsonStringInvalidBeginning, StateJson.objectMapper);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using an {@link
+   * ObjectMapper} where the JSON is invalid at the ending of the content.
+   */
   @Benchmark
   public boolean validationUsingObjectMapperReadTree_InvalidEnding(StateJson state) {
     return validateUsingObjectMapperReadTree(state.jsonStringInvalidEnding, StateJson.objectMapper);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using an {@link
+   * ObjectMapper} where the JSON is invalid in the middle of the content.
+   */
   @Benchmark
   public boolean validationUsingObjectMapperReadTree_InvalidMiddle(StateJson state) {
     return validateUsingObjectMapperReadTree(state.jsonStringInvalidMiddle, StateJson.objectMapper);
   }
 
+  /**
+   * Benchmark that measures the throughput of validating JSON structure using an {@link
+   * ObjectMapper} where the JSON is valid.
+   */
   @Benchmark
   public boolean validationUsingObjectMapperReadTree_Valid(StateJson state) {
     return validateUsingObjectMapperReadTree(state.jsonString, StateJson.objectMapper);

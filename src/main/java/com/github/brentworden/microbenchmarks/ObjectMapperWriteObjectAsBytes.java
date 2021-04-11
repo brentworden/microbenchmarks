@@ -31,7 +31,6 @@
 package com.github.brentworden.microbenchmarks;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -55,6 +54,10 @@ import org.openjdk.jmh.annotations.Setup;
 import org.openjdk.jmh.annotations.State;
 import org.openjdk.jmh.annotations.Warmup;
 
+/**
+ * Collection of benchmarks that measure the throughput of writing JSON to a byte array using an
+ * ObjectMapper.
+ */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -62,10 +65,12 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class ObjectMapperWriteObjectAsBytes {
 
+  /**
+   * State used by the benchmarks to hold onto an {@link ObjectMapper} and a test object so their
+   * construction is not considered part of the test.
+   */
   @State(Scope.Benchmark)
   public static class StateJson {
-
-    static final JsonFactory jsonFactory;
 
     static final ObjectMapper objectMapper;
 
@@ -76,8 +81,6 @@ public class ObjectMapperWriteObjectAsBytes {
       objectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
       objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
       objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
-      jsonFactory = objectMapper.getFactory();
     }
 
     Map<String, String> rawObject;
@@ -108,11 +111,16 @@ public class ObjectMapperWriteObjectAsBytes {
     }
   }
 
+  /** Benchmark that measures the throughput of writing an object directly to a byte array. */
   @Benchmark
   public byte[] writeBytes(StateJson state) throws JsonProcessingException {
     return StateJson.objectMapper.writeValueAsBytes(state.rawObject);
   }
 
+  /**
+   * Benchmark that measures the throughput of writing an object to a String that is then converted
+   * to a byte array.
+   */
   @Benchmark
   public byte[] writeStringConvertToBytes(StateJson state) throws JsonProcessingException {
     String jsonString = StateJson.objectMapper.writeValueAsString(state.rawObject);

@@ -56,6 +56,10 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class StringConcatenation {
 
+  /**
+   * State used by the benchmarks to hold onto {@link String} instances so their construction is not
+   * considered part of the test.
+   */
   @State(Scope.Benchmark)
   public static class StateStringParts {
     String[] parts;
@@ -83,11 +87,18 @@ public class StringConcatenation {
     }
   }
 
+  /**
+   * Benchmark that measures the throughput of string concatenation using the {@code +} operator.
+   */
   @Benchmark
   public String concatenationUsingAddition(StateStringParts state) {
     return state.parts[0] + state.parts[1] + state.parts[2] + state.parts[3] + state.parts[4];
   }
 
+  /**
+   * Benchmark that measures the throughput of string concatenation using a {@link StringBuilder}
+   * created with the default initial capacity.
+   */
   @Benchmark
   public String concatenationUsingStringBuilder(StateStringParts state) {
     StringBuilder b = new StringBuilder();
@@ -99,6 +110,10 @@ public class StringConcatenation {
     return b.toString();
   }
 
+  /**
+   * Benchmark that measures the throughput of string concatenation using a {@link StringBuilder}
+   * created with the exact necessary initial capacity.
+   */
   @Benchmark
   public String concatenationUsingStringBuilderWithExactInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(50);
@@ -110,6 +125,10 @@ public class StringConcatenation {
     return b.toString();
   }
 
+  /**
+   * Benchmark that measures the throughput of string concatenation using a {@link StringBuilder}
+   * created with a larger than necessary initial capacity.
+   */
   @Benchmark
   public String concatenationUsingStringBuilderWithLargeInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(60);
@@ -121,6 +140,10 @@ public class StringConcatenation {
     return b.toString();
   }
 
+  /**
+   * Benchmark that measures the throughput of string concatenation using a {@link StringBuilder}
+   * created with a smaller than necessary initial capacity.
+   */
   @Benchmark
   public String concatenationUsingStringBuilderWithSmallInitialCapacity(StateStringParts state) {
     StringBuilder b = new StringBuilder(40);
