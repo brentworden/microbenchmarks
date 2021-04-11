@@ -45,6 +45,10 @@ import org.openjdk.jmh.annotations.Mode;
 import org.openjdk.jmh.annotations.OutputTimeUnit;
 import org.openjdk.jmh.annotations.Warmup;
 
+/**
+ * Collection of benchmarks that measure the throughput of using a singleton ObjectMapper and a
+ * prototype ObjectMapper.
+ */
 @BenchmarkMode(Mode.Throughput)
 @OutputTimeUnit(TimeUnit.MILLISECONDS)
 @Warmup(iterations = 5, time = 1, timeUnit = TimeUnit.SECONDS)
@@ -70,11 +74,19 @@ public class ObjectMapperSingleton {
     return SINGLETON;
   }
 
+  /**
+   * Benchmark that measures the throughput of accessing an {@link ObjectMapper} through
+   * construction.
+   */
   @Benchmark
   public ObjectMapper prototypeObjectMapper() {
     return getPrototypeObjectMapper();
   }
 
+  /**
+   * Benchmark that measures the throughput of accessing an {@link ObjectMapper} through a
+   * pre-initialized singleton.
+   */
   @Benchmark
   public ObjectMapper singletonObjectMapper() {
     return getSingletonObjectMapper();

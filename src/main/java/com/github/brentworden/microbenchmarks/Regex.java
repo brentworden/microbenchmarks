@@ -57,8 +57,12 @@ import org.openjdk.jmh.annotations.Warmup;
 @Fork(10)
 public class Regex {
 
+  /**
+   * State used by the benchmarks to hold onto regex object so their construction is not considered
+   * part of the test.
+   */
   @State(Scope.Benchmark)
-  public static class _State {
+  public static class StatePatterns {
     Pattern excludePattern;
 
     String excludeRegex;
@@ -94,14 +98,21 @@ public class Regex {
     return new String(c);
   }
 
+  /**
+   * Benchmark that measures the throughput of regular expression matching using a {@link Pattern}.
+   */
   @Benchmark
-  public boolean matchesUsingPattern(_State state) {
+  public boolean matchesUsingPattern(StatePatterns state) {
     return state.includePattern.matcher(state.value).matches()
         && !state.excludePattern.matcher(state.value).matches();
   }
 
+  /**
+   * Benchmark that measures the throughput of regular expression matching using {@link
+   * String#matches(String)}.
+   */
   @Benchmark
-  public boolean matchesUsingString(_State state) {
+  public boolean matchesUsingString(StatePatterns state) {
     return state.value.matches(state.includeRegex) && !state.value.matches(state.excludeRegex);
   }
 }
