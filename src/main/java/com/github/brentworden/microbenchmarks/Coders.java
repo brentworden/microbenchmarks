@@ -178,7 +178,16 @@ public class Coders {
 
     @Override
     public TestObject decode(InputStream inStream) throws CoderException, IOException {
-      return null;
+      TestObject newTestObject = new TestObject();
+
+      newTestObject.setIntValue(INT_CODER.decode(inStream).intValue());
+      newTestObject.setNonNullableStringValue(STRING_CODER.decode(inStream));
+      Boolean nullableStringValueExists = BOOLEAN_CODER.decode(inStream);
+      if (nullableStringValueExists.booleanValue()) {
+        newTestObject.setNullableStringValue(STRING_CODER.decode(inStream));
+      }
+
+      return newTestObject;
     }
 
     @Override
